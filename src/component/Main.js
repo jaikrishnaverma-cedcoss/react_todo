@@ -9,7 +9,8 @@ class Main extends Component {
             Incomp: [],
             Comp: [],
             Message: "",
-            eIndex: -1
+            eIndex: -1,
+            btnVal:"ADD"
         }
 
     }
@@ -35,10 +36,12 @@ class Main extends Component {
             if (status === "completed")
                 this.state.Comp[index] = this.state.Message;
 
-
+          
+        this.setState({ btnVal: "ADD" })
         }
         this.setState({ Message: "" })
         this.setState({ eIndex: -1 })
+        
         // console.log(this.state.Incomp)
         this.populate()
     };
@@ -69,6 +72,7 @@ class Main extends Component {
         (status === "incompleted") ? this.setState({ Message: this.state.Incomp[index] }) : this.setState({ Message: this.state.Comp[index] })
         this.setState({ eIndex: index })
         this.setState({ eStatus: status })
+        this.setState({ btnVal: "UPDATE" })
     }
     delete = (event) => {
         let status = event.target.getAttribute('name');
@@ -86,7 +90,7 @@ class Main extends Component {
                     <h3>Add Item</h3>
                     <p>
                         <input id="new-task" type="text" value={this.state.Message} onChange={this.handleChange} />
-                        <button id="actioner" name={this.state.eStatus} index={this.state.eIndex} onClick={this.handleClick}>ADD</button>
+                        <button id="actioner" name={this.state.eStatus} index={this.state.eIndex} onClick={this.handleClick}>{this.state.btnVal}</button>
                     </p>
 
                     <h3>Todo</h3>
