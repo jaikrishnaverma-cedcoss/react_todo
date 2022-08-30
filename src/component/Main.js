@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Complete from './Complete';
 import Incomplete from './Incomplete';
 class Main extends Component {
-    //  Incomp=[];
-    //  Comp=[];
     constructor(props) {
         super(props);
         this.state =
@@ -11,7 +9,7 @@ class Main extends Component {
             Incomp: [],
             Comp: [],
             Message: "",
-            eIndex:-1
+            eIndex: -1
         }
 
     }
@@ -25,23 +23,22 @@ class Main extends Component {
         event.preventDefault();
         let index = parseInt(event.target.getAttribute('index'));
         let status = event.target.getAttribute('name');
-        
-        if(this.state.eIndex===-1)
-        {
-           if(this.state.Message!=="")
-            this.state.Incomp.push(this.state.Message);  
-        }
-        else{
-           if (status==="incompleted") 
-             this.state.Incomp[index]=this.state.Message;
-            
-            if(status==="completed")
-            this.state.Comp[index]=this.state.Message;
 
-           
+        if (this.state.eIndex === -1) {
+            if (this.state.Message !== "")
+                this.state.Incomp.push(this.state.Message);
+        }
+        else {
+            if (status === "incompleted")
+                this.state.Incomp[index] = this.state.Message;
+
+            if (status === "completed")
+                this.state.Comp[index] = this.state.Message;
+
+
         }
         this.setState({ Message: "" })
-        this.setState({eIndex:-1})
+        this.setState({ eIndex: -1 })
         // console.log(this.state.Incomp)
         this.populate()
     };
@@ -55,9 +52,9 @@ class Main extends Component {
         if (status === "incompleted") {
             let data = this.state.Incomp[index];
             this.state.Comp.push(data);
-            this.state.Incomp.splice(index, 1); 
-            event.target.checked=false;
-        
+            this.state.Incomp.splice(index, 1);
+            event.target.checked = false;
+
         }
         if (status === "completed") {
             let data = this.state.Comp[index];
@@ -66,12 +63,19 @@ class Main extends Component {
         }
         this.populate();
     }
-    EditClick=(event)=>{
+    EditClick = (event) => {
         let status = event.target.getAttribute('name');
-     let index = parseInt(event.target.getAttribute('index'));
-    (status === "incompleted") ? this.setState({Message:this.state.Incomp[index]}):this.setState({Message:this.state.Comp[index]})
-     this.setState({eIndex:index})
-     this.setState({eStatus:status})
+        let index = parseInt(event.target.getAttribute('index'));
+        (status === "incompleted") ? this.setState({ Message: this.state.Incomp[index] }) : this.setState({ Message: this.state.Comp[index] })
+        this.setState({ eIndex: index })
+        this.setState({ eStatus: status })
+    }
+    delete = (event) => {
+        let status = event.target.getAttribute('name');
+        let index = parseInt(event.target.getAttribute('index'));
+        (status === "incompleted") ? this.state.Incomp.splice(index, 1) : this.state.Comp.splice(index, 1)
+        this.populate();
+
     }
 
     render() {
@@ -88,12 +92,12 @@ class Main extends Component {
                     <h3>Todo</h3>
                     <ul id="Incomplete">
 
-                        <Incomplete arr={this.state.Incomp} actioner={this.actioner} edit={this.EditClick}/>
+                        <Incomplete arr={this.state.Incomp} actioner={this.actioner} edit={this.EditClick} delete={this.delete} />
                     </ul>
 
                     <h3>Completed</h3>
                     <ul id="Completed">
-                        <Complete arr={this.state.Comp} actioner={this.actioner} edit={this.EditClick}/>
+                        <Complete arr={this.state.Comp} actioner={this.actioner} edit={this.EditClick} delete={this.delete} />
                     </ul>
                 </div>
             </>
